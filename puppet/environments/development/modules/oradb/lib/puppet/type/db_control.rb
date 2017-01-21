@@ -17,6 +17,12 @@ module Puppet
         end
       end
 
+      newvalue(:mount, :event => :instance_running) do
+        unless resource[:refreshonly] == :true
+          provider.mount
+        end
+      end
+    
       aliasvalue(:running, :start)
       aliasvalue(:abort, :stop)
       aliasvalue(:stopped, :stop)
@@ -63,12 +69,6 @@ module Puppet
     newparam(:oracle_product_home_dir) do
       desc <<-EOT
         The oracle product home folder.
-      EOT
-    end
-
-    newparam(:grid_product_home_dir) do
-      desc <<-EOT
-        The grid product home folder.
       EOT
     end
 

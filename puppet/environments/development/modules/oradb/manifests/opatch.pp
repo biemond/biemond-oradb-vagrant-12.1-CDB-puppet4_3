@@ -38,7 +38,7 @@ define oradb::opatch(
     }
   }
 
-  case $::kernel {
+  case $facts['kernel'] {
     'Linux', 'SunOS': {
       if $ensure == 'present' {
         if $remote_file == true {
@@ -47,14 +47,12 @@ define oradb::opatch(
             require   => File["${download_dir}/${patch_file}"],
             creates   => "${download_dir}/${patch_id}",
             path      => $execPath,
-            user      => $user,
-            group     => $group,
             logoutput => false,
             before    => Db_opatch["${patch_id} ${title}"],
           }
         } else {
           exec { "extract opatch ${patch_file} ${title}":
-            command   => "unzip -n ${mountPoint}/${patch_file} -d ${download_dir}",
+            command   => "unzip -n ${puppet_download_mnt_point}/${patch_file} -d ${download_dir}",
             creates   => "${download_dir}/${patch_id}",
             path      => $execPath,
             user      => $user,
