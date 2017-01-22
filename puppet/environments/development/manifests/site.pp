@@ -1,6 +1,6 @@
 node 'dbcdb.example.com' {
   include oradb_os
-  # include oradb_client
+  include oradb_client
   include oradb_cdb
   # include oradb_gg
 }
@@ -117,11 +117,19 @@ class oradb_cdb {
       require      => Oradb::Installdb['db_linux-x64'],
     }
 
+
+    oradb::tnsnames{'testlistener':
+      entry_type         => 'listener',
+      oracle_home        => lookup('oracle_home_dir'),
+      server             => { myserver => { host => 'cdb.example.com', port => '1526', protocol => 'TCP' }},
+      require            => Oradb::Net['config net8'],
+    }
+
     db_listener{ 'startlistener':
       ensure          => 'running',  # running|start|abort|stop
       oracle_base_dir => lookup('oracle_base_dir'),
       oracle_home_dir => lookup('oracle_home_dir'),
-      require         => Oradb::Net['config net8'],
+      require         => Oradb::Tnsnames['testlistener'],
     }
 
     oradb::database{ 'oraDb':
@@ -133,7 +141,7 @@ class oradb_cdb {
       db_domain                 => lookup('oracle_database_domain_name'),
       sys_password              => lookup('oracle_database_sys_password'),
       system_password           => lookup('oracle_database_system_password'),
-      template                  => 'dbtemplate_12.1',
+      # template                  => 'dbtemplate_12.1',
       character_set             => 'AL32UTF8',
       nationalcharacter_set     => 'UTF8',
       sample_schema             => 'TRUE',
@@ -209,6 +217,24 @@ class oradb_client {
     logoutput                 => true,
     puppet_download_mnt_point => lookup('oracle_source'),
   }
+
+    oradb::tnsnames{'orcl':
+      oracle_home          => '/oracle/product/12.1/client',
+      server               => { myserver => { host => 'dbcdb.example.com', port => '1521', protocol => 'TCP' }},
+      connect_service_name => 'cdb.example.com',
+      require              => Oradb::Client['12.1.0.2_Linux-x86-64'],
+    }
+
+    oradb::tnsnames{'test':
+      oracle_home          => '/oracle/product/12.1/client',
+      server               => { myserver =>  { host => 'dbcdb.example.com',  port => '1525', protocol => 'TCP' }, 
+                                myserver2 => { host => 'dbcdb.example.com', port => '1526', protocol => 'TCP' }
+                              },
+      connect_service_name => 'cdb.example.com',
+      connect_server       => 'DEDICATED',
+      require              =>  Oradb::Client['12.1.0.2_Linux-x86-64'],
+    }
+
 }
 
 class oradb_gg {
