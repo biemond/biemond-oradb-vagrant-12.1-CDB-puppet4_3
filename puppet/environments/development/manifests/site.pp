@@ -10,9 +10,10 @@ Package{allow_virtual => false,}
 # operating settings for Database & Middleware
 class oradb_os {
 
-  # class { 'swap_file':
-  #   swapfile     => '/var/swap.1',
-  #   swapfilesize => '8192000000'
+  # swap_file::files { 'swap_file_custom':
+  #   ensure       => present,
+  #   swapfilesize => '6.0 GB',
+  #   swapfile     => '/data/swapfile.custom',
   # }
 
   # set the tmpfs
@@ -213,8 +214,9 @@ class oradb_client {
     file                      => 'linuxamd64_12102_client.zip',
     oracle_base               => '/oracle',
     oracle_home               => '/oracle/product/12.1/client',
+    ora_inventory_dir         => '/oracle',
     remote_file               => false,
-    logoutput                 => true,
+    log_output                => true,
     puppet_download_mnt_point => lookup('oracle_source'),
   }
 
@@ -240,9 +242,9 @@ class oradb_client {
 class oradb_gg {
   require oradb_cdb
 
-    oradb::goldengate{ 'ggate12.1.2':
-      version                    => '12.1.2',
-      file                       => '121210_fbo_ggs_Linux_x64_shiphome.zip',
+    oradb::goldengate{ 'ggate12.2.1':
+      version                    => '12.2.1',
+      file                       => 'fbo_ggs_Linux_x64_shiphome.zip',
       database_type              => 'Oracle',
       database_version           => 'ORA12c',
       database_home              => lookup('oracle_home_dir'),
@@ -256,39 +258,39 @@ class oradb_gg {
       puppet_download_mnt_point  => lookup('oracle_source'),
     }
 
-    file { "/oracle/product/11.2.1" :
-      ensure        => directory,
-      recurse       => false,
-      replace       => false,
-      mode          => '0775',
-      owner         => lookup('oracle_os_user'),
-      group         => 'dba',
-      require       => Oradb::Goldengate['ggate12.1.2'],
-    }
+    # file { "/oracle/product/11.2.1" :
+    #   ensure        => directory,
+    #   recurse       => false,
+    #   replace       => false,
+    #   mode          => '0775',
+    #   owner         => lookup('oracle_os_user'),
+    #   group         => 'dba',
+    #   require       => Oradb::Goldengate['ggate12.1.2'],
+    # }
 
-    oradb::goldengate{ 'ggate11.2.1':
-      version                    => '11.2.1',
-      file                       => 'ogg112101_fbo_ggs_Linux_x64_ora11g_64bit.zip',
-      tar_file                   => 'fbo_ggs_Linux_x64_ora11g_64bit.tar',
-      goldengate_home            => "/oracle/product/11.2.1/ggate",
-      user                       => lookup('oracle_os_user'),
-      group                      => 'dba',
-      download_dir               => lookup('oracle_download_dir'),
-      puppet_download_mnt_point  => lookup('oracle_source'),
-      require                    => File["/oracle/product/11.2.1"],
-    }
-
-    # oradb::goldengate{ 'ggate11.2.1_java':
+    # oradb::goldengate{ 'ggate11.2.1':
     #   version                    => '11.2.1',
-    #   file                       => 'V38714-01.zip',
-    #   tar_file                   => 'ggs_Adapters_Linux_x64.tar',
-    #   goldengate_home            => "/oracle/product/11.2.1/ggate_java",
+    #   file                       => 'ogg112101_fbo_ggs_Linux_x64_ora11g_64bit.zip',
+    #   tar_file                   => 'fbo_ggs_Linux_x64_ora11g_64bit.tar',
+    #   goldengate_home            => "/oracle/product/11.2.1/ggate",
     #   user                       => lookup('oracle_os_user'),
     #   group                      => 'dba',
-    #   group_install              => 'oinstall',
     #   download_dir               => lookup('oracle_download_dir'),
     #   puppet_download_mnt_point  => lookup('oracle_source'),
     #   require                    => File["/oracle/product/11.2.1"],
     # }
+
+    # # oradb::goldengate{ 'ggate11.2.1_java':
+    # #   version                    => '11.2.1',
+    # #   file                       => 'V38714-01.zip',
+    # #   tar_file                   => 'ggs_Adapters_Linux_x64.tar',
+    # #   goldengate_home            => "/oracle/product/11.2.1/ggate_java",
+    # #   user                       => lookup('oracle_os_user'),
+    # #   group                      => 'dba',
+    # #   group_install              => 'oinstall',
+    # #   download_dir               => lookup('oracle_download_dir'),
+    # #   puppet_download_mnt_point  => lookup('oracle_source'),
+    # #   require                    => File["/oracle/product/11.2.1"],
+    # # }
 
 }

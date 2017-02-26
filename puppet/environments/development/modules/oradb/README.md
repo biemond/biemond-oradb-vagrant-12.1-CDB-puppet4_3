@@ -2,10 +2,15 @@
 
 [![Build Status](https://travis-ci.org/biemond/biemond-oradb.svg?branch=master)](https://travis-ci.org/biemond/biemond-oradb) ![Puppet Forge Version](https://img.shields.io/puppetforge/v/biemond/oradb.svg) ![Puppet Forge Score](https://img.shields.io/puppetforge/f/biemond/oradb.svg) ![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/biemond/oradb.svg) [![Coverage Status](https://coveralls.io/repos/biemond/biemond-oradb/badge.svg?branch=master&service=github)](https://coveralls.io/github/biemond/biemond-oradb?branch=master)
 
-Latest puppet 4 version (It cannot be used with puppet 3) is located at [puppet4_3_data branch](https://github.com/biemond/biemond-oradb/tree/puppet4_3_data) and uses the latest features of puppet 4 like
+Only for Puppet >= 4.3 and uses the latest puppet 4 features like
 - Strong data typing
 - Internal hiera module data
+- uses Facts array
+- epp templating instead of erb
 
+For Puppet 3, 4 you have to use the latest 2.x version of this oradb module
+
+source code is located at [puppet4_3_data branch](https://github.com/biemond/biemond-oradb/tree/puppet4_3_data)
 
 created by Edwin Biemond
 [biemond.blogspot.com](http://biemond.blogspot.com)
@@ -13,7 +18,7 @@ created by Edwin Biemond
 
 If you need support, checkout the [ora_install](https://www.enterprisemodules.com/shop/products/puppet-ora_install-module) from [Enterprise Modules](https://www.enterprisemodules.com/)
 
-[![Enterprise Modules](https://raw.githubusercontent.com/enterprisemodules/public_images/master/banner1.jpg)](https://www.enterprisemodules.com)
+[![Enterprise Modules](https://www.enterprisemodules.com/images/puppet-logo.png)](https://www.enterprisemodules.com)
 
 With version >= 2.0.0  all manifest parameters are in lowercase and in snakestyle instead of camelcase
 
@@ -22,27 +27,24 @@ Dependency with
 - puppetlabs/stdlib >= 4.0.0
 
 Should work on Docker, for Solaris and on all Linux version like RedHat, CentOS, Ubuntu, Debian, Suse SLES or OracleLinux
+- CentOS 7.3 vagrant box with Oracle Database 12.2.0.1 with pluggable databases [12c pluggable db puppet 4 vagrant box](https://github.com/biemond/biemond-oradb-vagrant-12.2-CDB-puppet4_3)
 - Docker image of Oracle Database 12.1 SE [Docker Oracle Database 12.1.0.1](https://github.com/biemond/docker-database-puppet)
-- CentOS 6.7 vagrant box with Oracle Database 12.1 and Enterprise Manager 12.1.0.5 [Enterprise vagrant box](https://github.com/biemond/biemond-em-12c)
-- CentOS 7.2 vagrant box with Oracle Database 12.1.0.2 on NFS ASM [ASM vagrant box](https://github.com/biemond/biemond-oradb-vagrant-12.1-ASM)
-- CentOS 6.6 vagrant box with Oracle Database 11.2.0.4 on NFS ASM [ASM vagrant box](https://github.com/biemond/biemond-oradb-vagrant-11.2-ASM)
-- CentOS 6.6 vagrant box with Oracle Database 12.1.0.1 with pluggable databases [12c pluggable db vagrant box](https://github.com/biemond/biemond-oradb-vagrant-12.1-CDB)
-- Solaris 11.2 vagrant box with Oracle Database 12.1 [solaris 11.2 vagrant box](https://github.com/biemond/biemond-oradb-vagrant-12.1-solaris11.2)
-- Solaris 10 vagrant box with Oracle Database 12.1 [solaris 10 vagrant box](https://github.com/biemond/biemond-orawls-vagrant-solaris-soa)
+- CentOS 6.7 vagrant box with Oracle Database 12.1 and Enterprise Manager 12.1.0.5 [Enterprise puppet 4 vagrant box](https://github.com/biemond/biemond-em-12c-puppet4_3)
+- CentOS 7.2 vagrant box with Oracle Database 12.1.0.2 on NFS ASM [ASM puppet 4 vagrant box](https://github.com/biemond/biemond-oradb-vagrant-12.1-ASM-puppet4_3)
+- CentOS 6.6 vagrant box with Oracle Database 11.2.0.4 on NFS ASM [ASM puppet 4 vagrant box](https://github.com/biemond/biemond-oradb-vagrant-11.2-ASM-puppet4_3)
+- CentOS 6.6 vagrant box with Oracle Database 12.1.0.2 with pluggable databases [12c pluggable db puppet 4 vagrant box](https://github.com/biemond/biemond-oradb-vagrant-12.1-CDB-puppet4_3)
 - CentOS 6.5 vagrant box with Oracle Database 11.2.0.4 and GoldenGate 12.1.2 [coherence goldengate vagrant box]( https://github.com/biemond/vagrant-wls12.1.2-coherence-goldengate)
 
-Example of Opensource Puppet 3.4.3 Puppet master configuration in a vagrant box [puppet master](https://github.com/biemond/vagrant-puppetmaster)
-- oradb (oracle database 11.2.0.1 ) with GoldenGate 12.1.2
 
 Should work for Puppet >=  4.0
 
 ## Oracle Database Features
 
-- Oracle Grid 11.2.0.4, 12.1.0.1 Linux / Solaris installation
-- Oracle Database 12.1.0.1,12.1.0.2 Linux / Solaris installation
-- Oracle Database 11.2.0.1,11.2.0.3,11.2.0.4 Linux / Solaris installation
+- Oracle Grid 11.2.0.4, 12.1.0.1, 12.1.0.2, 12.2.0.1 Linux / Solaris installation
+- Oracle Database 12.1.0.1, 12.1.0.2, 12.2.0.1  Linux / Solaris installation
+- Oracle Database 11.2.0.1, 11.2.0.3, 11.2.0.4 Linux / Solaris installation
 - Oracle Database Instance 11.2 & 12.1 with pluggable database or provide your own db template
-- Oracle Database Client 12.1.0.1,12.1.0.2,11.2.0.4,11.2.0.1 Linux / Solaris installation
+- Oracle Database Client 12.2.0.1, 12.1.0.1, 12.1.0.2, 11.2.0.4, 11.2.0.1 Linux / Solaris installation
 - Oracle Database Net configuration
 - Oracle Database Listener
 - Tnsnames entry
@@ -55,11 +57,11 @@ Should work for Puppet >=  4.0
 - Stop/Start database instances with db_control puppet resource type
 
 ## Enterprise Manager
-- Enterprise Manager Server 12.1.0.4 12c cloud installation / configuration
+- Enterprise Manager Server 12.1.0.4, 12.1.0.5, 12c cloud installation / configuration
 - Agent installation via AgentPull.sh & AgentDeploy.sh
 
 ## GoldenGate
-- GoldenGate 12.1.2, 11.2.1
+- GoldenGate 12.2.1, 12.1.2, 11.2.1
 
 ## Repository Creation Utility (RCU)
 - Installs RCU repositoy for Oracle SOA Suite / Webcenter ( 11.1.1.6.0 and 11.1.1.7.0 ) / Oracle Identity Management ( 11.1.2.1 )
@@ -214,6 +216,22 @@ install the following module to set the database user limits parameters
 ## Database install
 
     $puppet_download_mnt_point = "puppet:///modules/oradb/"
+
+    oradb::installdb{ '12.2.0.1_Linux-x86-64':
+      version                   => '12.2.0.1',
+      file                      => 'V839960-01',
+      database_type             => 'EE',
+      oracle_base               => '/oracle',
+      oracle_home               => '/oracle/product/12.2/db',
+      bash_profile              => true,
+      user                      => 'oracle',
+      group                     => 'dba',
+      group_install             => 'oinstall',
+      group_oper                => 'oper',
+      download_dir              => '/data/install',
+      zip_extract               => true,
+      puppet_download_mnt_point => $puppet_download_mnt_point,
+    }
 
     oradb::installdb{ '12.1.0.2_Linux-x86-64':
       version                   => '12.1.0.2',
@@ -494,16 +512,12 @@ to use the new opatchauto utility(12.1) instead of opatch auto(11.2) use this pa
                                     'processes'           => '600',
                                     'job_queue_processes' => '4' },
       sample_schema             => 'TRUE',
-      memory_percentage         => "40",
-      memory_total              => "800",
+      memory_percentage         => 40,
+      memory_total              => 800,
       database_type             => "MULTIPURPOSE",
       em_configuration          => "NONE",
       require                   => Oradb::Listener['start listener'],
     }
-
-you can also use a comma separated string for init_params
-
-      init_params              => "open_cursors=1000,processes=600,job_queue_processes=4",
 
 
 ### template (not seeded)
@@ -529,15 +543,15 @@ with a template of the oradb module
       action                    => 'create',
       db_name                   => 'test',
       db_domain                 => 'oracle.com',
-      db_port                   => '1521',
+      db_port                   => 1521,
       sys_password              => 'Welcome01',
       system_password           => 'Welcome01',
       data_file_destination     => "/oracle/oradata",
       recovery_area_destination => "/oracle/flash_recovery_area",
       character_set             => "AL32UTF8",
       nationalcharacter_set     => "UTF8",
-      memory_percentage         => "40",
-      memory_total              => "800",
+      memory_percentage         => 40,
+      memory_total              => 800,
       require                   => Oradb::Listener['start listener'],
     }
 
@@ -565,15 +579,15 @@ The template must be have the following extension dbc like General_Purpose.dbc
       action                    => 'create',
       db_name                   => 'test',
       db_domain                 => 'oracle.com',
-      db_port                   => '1521',
+      db_port                   => 1521,
       sys_password              => 'Welcome01',
       system_password           => 'Welcome01',
       data_file_destination     => "/oracle/oradata",
       recovery_area_destination => "/oracle/flash_recovery_area",
       character_set             => "AL32UTF8",
       nationalcharacter_set     => "UTF8",
-      memory_percentage         => "40",
-      memory_total              => "800",
+      memory_percentage         => 40,
+      memory_total              => 800,
       require                   => Oradb::Listener['start listener'],
     }
 
@@ -596,8 +610,8 @@ The template must be have the following extension dbc like General_Purpose.dbc
       character_set             => 'AL32UTF8',
       nationalcharacter_set     => 'UTF8',
       sample_schema             => 'FALSE',
-      memory_percentage         => '40',
-      memory_total              => '800',
+      memory_percentage         => 40,
+      memory_total              => 800,
       database_type             => 'MULTIPURPOSE',
       em_configuration          => 'NONE',
       data_file_destination     => '/oracle/oradata',
@@ -730,6 +744,7 @@ or delete a database
       oracle_home             => '/oracle/product/12.1/db',
       user                    => 'oracle',
       db_name                 => 'test',
+      service_name            => 'dbora',
       require                 => Oradb::Dbactions['start testDb'],
     }
 
@@ -1082,6 +1097,18 @@ or delete a database
 
 ## Oracle Database Client
 
+    oradb::client{ '12.2.0.1_Linux-x86-64':
+      version                   => '12.2.0.1',
+      file                      => 'V839967-01.zip',
+      oracle_base               => '/oracle',
+      oracle_home               => '/oracle/product/12.2/client',
+      remote_file               => false,
+      log_output                => true,
+      puppet_download_mnt_point => lookup('oracle_source'),
+    }
+
+or
+
     oradb::client{ '12.1.0.1_Linux-x86-64':
       version                   => '12.1.0.1',
       file                      => 'linuxamd64_12c_client.zip',
@@ -1160,6 +1187,7 @@ or
       group                       => 'dba',
       download_dir                => '/var/tmp/install',
       log_output                  => true,
+      oracle_hostname             => 'emdb.example.com', # FQDN hostname where to install on
     }
 
     oradb::installem_agent{ 'em12104_agent2':
