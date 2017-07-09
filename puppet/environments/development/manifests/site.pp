@@ -1,6 +1,6 @@
 node 'dbcdb.example.com' {
   include oradb_os
-  include oradb_client
+  # include oradb_client
   include oradb_cdb
   # include oradb_gg
 }
@@ -10,11 +10,12 @@ Package{allow_virtual => false,}
 # operating settings for Database & Middleware
 class oradb_os {
 
-  # swap_file::files { 'swap_file_custom':
-  #   ensure       => present,
-  #   swapfilesize => '6.0 GB',
-  #   swapfile     => '/data/swapfile.custom',
-  # }
+
+  swap_file::files { 'swap_file_custom':
+    ensure       => present,
+    swapfilesize => '6.0 GB',
+    swapfile     => '/data/swapfile.custom',
+  }
 
   # set the tmpfs
   mount { '/dev/shm':
@@ -112,12 +113,30 @@ class oradb_cdb {
       puppet_download_mnt_point => lookup('oracle_source'),
     }
 
+    oradb::opatchupgrade{'121000_opatch_upgrade_db':
+      oracle_home               => hiera('oracle_home_dir'),
+      patch_file                => 'p6880880_121010_Linux-x86-64.zip',
+      opversion                 => '12.2.0.1.9',
+      puppet_download_mnt_point => hiera('oracle_source'),
+      require                   => Oradb::Installdb['db_linux-x64'],
+    }
+
+    oradb::opatch{'25171037_db_patch':
+      ensure                    => 'present',
+      oracle_product_home       => lookup('oracle_home_dir'),
+      patch_id                  => '25171037',
+      patch_file                => 'p25171037_121020_Linux-x86-64.zip',
+      ocmrf                     => false,
+      use_opatchauto_utility    => false, 
+      puppet_download_mnt_point => lookup('oracle_source'),
+      require                   => Oradb::Opatchupgrade['121000_opatch_upgrade_db'],
+    }
+
     oradb::net{ 'config net8':
       oracle_home  => lookup('oracle_home_dir'),
       version      => lookup('dbinstance_version'),
-      require      => Oradb::Installdb['db_linux-x64'],
+      require      => Oradb::Opatch['25171037_db_patch'],
     }
-
 
     oradb::tnsnames{'testlistener':
       entry_type         => 'listener',

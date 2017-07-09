@@ -9,16 +9,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "dbcdb" , primary: true do |dbcdb|
 
 
-    # dbcdb.vm.box = "centos-7-1511-x86_64"
-    # dbcdb.vm.box_url = "https://dl.dropboxusercontent.com/s/filvjntyct1wuxe/centos-7-1511-x86_64.box"
-
-    # dbcdb.vm.provider :vmware_fusion do |v, override|
-    #   override.vm.box = "centos-7-1611-x86_64-vmware"
-    #   override.vm.box_url = "https://dl.dropboxusercontent.com/s/h5g5kqjrzq5dn53/centos-7-1511-x86_64-vmware.box"
-    # end
-
-    dbcdb.vm.box = "OEL7_2-x86_64"
-    dbcdb.vm.box_url = "https://dl.dropboxusercontent.com/s/0yz6r876qkps68i/OEL7_2-x86_64.box"
+    dbcdb.vm.box = "centos-7-1611-x86_64"
+    dbcdb.vm.box_url = "https://dl.dropboxusercontent.com/s/filvjntyct1wuxe/centos-7-1611-x86_64.box"
 
     dbcdb.vm.provider :vmware_fusion do |v, override|
       override.vm.box = "centos-7-1611-x86_64-vmware"
