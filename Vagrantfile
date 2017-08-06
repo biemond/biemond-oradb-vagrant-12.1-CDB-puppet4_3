@@ -21,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dbcdb.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777","fmode=777"]
     dbcdb.vm.synced_folder "/Users/edwinbiemond/software", "/software"
 
-    dbcdb.vm.network :private_network, ip: "10.10.10.8"
+    dbcdb.vm.network :private_network, ip: "10.10.10.18"
 
     dbcdb.vm.provider :vmware_fusion do |vb|
       vb.vmx["numvcpus"] = "2"

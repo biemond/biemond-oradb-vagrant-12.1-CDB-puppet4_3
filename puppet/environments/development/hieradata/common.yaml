@@ -2,7 +2,7 @@
 
 hosts:
   'dbcdb.example.com':
-    ip:                "10.10.10.8"
+    ip:                "10.10.10.18"
     host_aliases:      'dbcdb'
   'localhost':
     ip:                "127.0.0.1"
