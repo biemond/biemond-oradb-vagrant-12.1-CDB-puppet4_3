@@ -11,11 +11,11 @@ Package{allow_virtual => false,}
 class oradb_os {
 
 
-  swap_file::files { 'swap_file_custom':
-    ensure       => present,
-    swapfilesize => '6.0 GB',
-    swapfile     => '/data/swapfile.custom',
-  }
+  # swap_file::files { 'swap_file_custom':
+  #   ensure       => present,
+  #   swapfilesize => '6.0 GB',
+  #   swapfile     => '/data/swapfile.custom',
+  # }
 
   # set the tmpfs
   mount { '/dev/shm':
@@ -118,6 +118,7 @@ class oradb_cdb {
       patch_file                => 'p6880880_121010_Linux-x86-64.zip',
       opversion                 => '12.2.0.1.9',
       puppet_download_mnt_point => hiera('oracle_source'),
+      remote_file               => false,
       require                   => Oradb::Installdb['db_linux-x64'],
     }
 
@@ -161,7 +162,6 @@ class oradb_cdb {
       db_domain                 => lookup('oracle_database_domain_name'),
       sys_password              => lookup('oracle_database_sys_password'),
       system_password           => lookup('oracle_database_system_password'),
-      # template                  => 'dbtemplate_12.1',
       character_set             => 'AL32UTF8',
       nationalcharacter_set     => 'UTF8',
       sample_schema             => 'TRUE',
@@ -169,7 +169,10 @@ class oradb_cdb {
       memory_total              => 1200,
       database_type             => 'MULTIPURPOSE',
       em_configuration          => 'NONE',
-      data_file_destination     => lookup('oracle_database_file_dest'),
+      template                  => 'dbtemplate_12.1_vars',
+      template_variables        => { 'location01' => '/oracle/oradata/' , 'location02' => '/oracle/oradata/' },
+      # template                  => 'dbtemplate_12.1',
+      # data_file_destination     => lookup('oracle_database_file_dest'),
       recovery_area_destination => lookup('oracle_database_recovery_dest'),
       init_params               => {'open_cursors'        => '1000',
                                     'processes'           => '600',
